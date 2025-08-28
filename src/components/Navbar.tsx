@@ -1,8 +1,24 @@
 import Link from 'next/link';
 import { Calendar, User, Search, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { createClient } from '@/utils/supabase/client';
 
 export default function Navbar() {
+  const handleGoogleSignIn = async () => {
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        // Restricting signups to @ssn.edu.in domain
+        queryParams: {
+          prompt: 'select_account',
+          hd: 'ssn.edu.in',
+        },
+      },
+    });
+  };
+
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-black/50 backdrop-blur-md supports-[backdrop-filter]:bg-black/20">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -28,8 +44,11 @@ export default function Navbar() {
           <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
             <Search className="w-4 h-4" />
           </Button>
-          <Button className="hidden md:flex bg-white text-black hover:bg-gray-200 rounded-full px-6 font-medium transition-all hover:scale-105">
-            Sign In
+          <Button 
+            onClick={handleGoogleSignIn}
+            className="hidden md:flex bg-white text-black hover:bg-gray-200 rounded-full px-6 font-medium transition-all hover:scale-105"
+          >
+            Sign In with Google
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden text-gray-300 hover:text-white">
             <Menu className="w-5 h-5" />
