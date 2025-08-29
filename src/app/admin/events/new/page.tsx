@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -84,11 +84,11 @@ export default function CreateEventPage() {
           <div className="space-y-2 flex flex-col">
             <label className="text-sm font-medium text-gray-200">Event Date</label>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal bg-black/50 border-white/20 text-white hover:bg-white/10">
+              <PopoverTrigger render={<button type="button" className={buttonVariants({ variant: "outline", className: "w-full justify-start text-left font-normal bg-black/50 border-white/20 text-white hover:bg-white/10" })} />}>
+                <div className="flex items-center">
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {date ? format(date, "PPP") : <span>Pick a date</span>}
-                </Button>
+                </div>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0 bg-black border-white/20" align="start">
                 <Calendar mode="single" selected={date} onSelect={setDate} className="text-white" />
@@ -99,11 +99,11 @@ export default function CreateEventPage() {
           <div className="space-y-2 flex flex-col">
             <label className="text-sm font-medium text-gray-200">Registration Deadline</label>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal bg-black/50 border-white/20 text-white hover:bg-white/10">
+              <PopoverTrigger render={<button type="button" className={buttonVariants({ variant: "outline", className: "w-full justify-start text-left font-normal bg-black/50 border-white/20 text-white hover:bg-white/10" })} />}>
+                <div className="flex items-center">
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {deadline ? format(deadline, "PPP") : <span>Pick a deadline</span>}
-                </Button>
+                </div>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0 bg-black border-white/20" align="start">
                 <Calendar mode="single" selected={deadline} onSelect={setDeadline} className="text-white" />

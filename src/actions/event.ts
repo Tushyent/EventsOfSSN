@@ -31,7 +31,7 @@ export async function createEventAction(formData: FormData) {
     // Upload poster to Supabase Storage
     const fileExt = poster.name.split('.').pop();
     const fileName = `${uuidv4()}.${fileExt}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('event-posters')
       .upload(fileName, poster, {
         cacheControl: '3600',
@@ -72,7 +72,7 @@ export async function createEventAction(formData: FormData) {
     revalidatePath("/events");
     return { success: true };
     
-  } catch (error: any) {
-    return { error: error.message || "An unexpected error occurred." };
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : "An unexpected error occurred." };
   }
 }

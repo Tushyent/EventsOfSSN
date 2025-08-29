@@ -1,5 +1,7 @@
+"use client";
+
 import Link from 'next/link';
-import { Calendar, User, Search, Menu } from 'lucide-react';
+import { Calendar, Search, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/client';
 
