@@ -17,11 +17,17 @@ export async function createEventAction(formData: FormData) {
     // Extract basic fields
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const category = formData.get("category") as string;
+    const categoryRaw = formData.get("category") as string;
+    const custom_category = formData.get("custom_category") as string;
+    const category = categoryRaw === "Other" && custom_category ? custom_category : categoryRaw;
+    
     const venue = formData.get("venue") as string;
     const event_date = formData.get("event_date") as string;
+    const event_time = formData.get("event_time") as string;
     const registration_deadline = formData.get("registration_deadline") as string;
-    const registration_link = formData.get("registration_link") as string;
+    const registration_fee = formData.get("registration_fee") as string;
+    const prize_pool = formData.get("prize_pool") as string;
+    const coordinator_contact = formData.get("coordinator_contact") as string;
     const poster = formData.get("poster") as File;
 
     if (!title || !description || !category || !venue || !event_date || !registration_deadline || !poster) {
@@ -58,8 +64,11 @@ export async function createEventAction(formData: FormData) {
         category,
         venue,
         event_date,
+        event_time: event_time || null,
         registration_deadline,
-        registration_link: registration_link || null,
+        registration_fee: registration_fee || null,
+        prize_pool: prize_pool || null,
+        coordinator_contact: coordinator_contact || null,
         poster_url,
         status: 'pending', // Requires Super Admin approval
         created_by: user.id

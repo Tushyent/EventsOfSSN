@@ -16,6 +16,7 @@ export default function CreateEventPage() {
   const [deadline, setDeadline] = useState<Date>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,6 +36,7 @@ export default function CreateEventPage() {
       e.currentTarget.reset();
       setDate(undefined);
       setDeadline(undefined);
+      setSelectedCategory("");
     }
     
     setIsSubmitting(false);
@@ -62,27 +64,33 @@ export default function CreateEventPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-200">Category</label>
-            <Select name="category" required>
+            <Select name="category" required onValueChange={(val) => setSelectedCategory(val || "")} value={selectedCategory}>
               <SelectTrigger className="bg-black/50 border-white/20 text-white">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent className="bg-black border-white/20 text-white">
-                <SelectItem value="technical">Technical</SelectItem>
-                <SelectItem value="cultural">Cultural</SelectItem>
-                <SelectItem value="sports">Sports</SelectItem>
-                <SelectItem value="hackathon">Hackathon</SelectItem>
-                <SelectItem value="symposium">Symposium</SelectItem>
+                <SelectItem value="Tech Events">Tech Events</SelectItem>
+                <SelectItem value="Non-Tech Events">Non-Tech Events</SelectItem>
+                <SelectItem value="Workshops">Workshops</SelectItem>
+                <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
+          {selectedCategory === "Other" && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-200">Custom Category</label>
+              <Input name="custom_category" required placeholder="e.g. Guest Lecture" className="bg-black/50 border-white/20 text-white" />
+            </div>
+          )}
+
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-200">Venue</label>
+            <label className="text-sm font-medium text-gray-200">Venue / Location</label>
             <Input name="venue" required placeholder="e.g. Main Auditorium" className="bg-black/50 border-white/20 text-white" />
           </div>
 
           <div className="space-y-2 flex flex-col">
-            <label className="text-sm font-medium text-gray-200">Event Date</label>
+            <label className="text-sm font-medium text-gray-200">Event Start Date</label>
             <Popover>
               <PopoverTrigger render={<button type="button" className={buttonVariants({ variant: "outline", className: "w-full justify-start text-left font-normal bg-black/50 border-white/20 text-white hover:bg-white/10" })} />}>
                 <div className="flex items-center">
@@ -94,6 +102,11 @@ export default function CreateEventPage() {
                 <Calendar mode="single" selected={date} onSelect={setDate} className="text-white" />
               </PopoverContent>
             </Popover>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-200">Event Time (Optional)</label>
+            <Input name="event_time" placeholder="e.g. 9:00 AM - 5:00 PM" className="bg-black/50 border-white/20 text-white" />
           </div>
 
           <div className="space-y-2 flex flex-col">
@@ -110,11 +123,21 @@ export default function CreateEventPage() {
               </PopoverContent>
             </Popover>
           </div>
-        </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-200">Registration Link (Optional)</label>
-          <Input name="registration_link" type="url" placeholder="https://forms.gle/..." className="bg-black/50 border-white/20 text-white" />
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-200">Registration Fee (Optional)</label>
+            <Input name="registration_fee" placeholder="e.g. Free, ₹200 per team" className="bg-black/50 border-white/20 text-white" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-200">Prize Pool (Optional)</label>
+            <Input name="prize_pool" placeholder="e.g. ₹50,000 Total" className="bg-black/50 border-white/20 text-white" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-200">Coordinator Contact (Optional)</label>
+            <Input name="coordinator_contact" placeholder="e.g. John Doe - 9876543210" className="bg-black/50 border-white/20 text-white" />
+          </div>
         </div>
 
         <div className="space-y-2">
